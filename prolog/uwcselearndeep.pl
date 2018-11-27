@@ -16,6 +16,7 @@ To learn the parameteters and test the result
 */
 
 :-use_module(library(phil)).
+%:- use_module(phil).
 :- if(current_predicate(use_rendering/1)).
 :- use_rendering(c3).
 :- use_rendering(lpad).
@@ -23,19 +24,21 @@ To learn the parameteters and test the result
 
 :-sc.
 
+:- set_sc(depth_bound,false).
 :- set_sc(verbosity,3).
 :- set_sc(zero,0.00000001).
 
 % Yes to set a seed and no to use the time clock seed
-:- set_sc(setSeed,"no"). % Default value=no
+:- set_sc(setSeed,yes). % Default value=no
 :- set_sc(c_seed,3035).
+default_setting_sc(useInitParams,no). % Default value=no
 
 % choose the parameter learning: dphil (the default) or emphil 
-:- set_sc(algorithmType,"dphil").
-% "Yes" to save the statistis and "No" otherwise
-:- set_sc(saveStatistics,"Yes"). % default value="No" 
+:- set_sc(algorithmType,dphil).
+% yes to save the statistis and no otherwise
+:- set_sc(saveStatistics,yes). % default value=no
 % The name of the folder where to save the statistics
-:- set_sc(statistics_folder,"UWCSE").
+:- set_sc(statistics_folder,uwcse_deep).
 
 
 % Hyperparameters to optimize for each dataset
@@ -48,14 +51,14 @@ To learn the parameteters and test the result
 % randomly select the initial values of the weights between [-max, max]
 :- set_sc(max_initial_weight,0.5).
 
-% Value to use if the denomitors of a certain fractions are zero: default value= 0.0000001
+% Value to use if the denominators of a certain fractions are zero: default value= 0.0000001
 :- set_sc(zero,0.0000001).
 
 % Adam parameter for dphil algorithm
 % adam(Eta,Beta1,Beta2,Epsilon_adam_hat)
 :- set_sc(adam_params,[0.4,0.1,0.4,1e-8]).
 
-% Gradient descent strategy and the correspondin batch size
+% Gradient descent strategy and the corresponding batch size
 :- set_sc(batch_strategy,stoch_minibatch(100)).
 %:- set_sc(batch_strategy,minibatch(100)).
 %:- set_sc(batch_strategy,batch).
@@ -164,26 +167,33 @@ coauthor_pro2(A,B,C,D):0.5:-
 
 output(advisedby/2).
 
+input_cw(student/1).
 
-input(student/1).
+input_cw(professor/1).
 
-input(professor/1).
+input_cw(inphase/2).
 
-input(inphase/2).
+input_cw(hasposition/2).
 
-input(hasposition/2).
+input_cw(publication/2).
 
-input(publication/2).
+input_cw(yearsinprogram/2).
 
-input(yearsinprogram/2).
+input_cw(taughtby/3).
 
-input(taughtby/3).
+input_cw(ta/3).
 
-input(ta/3).
+input_cw(courselevel/2).
 
-input(courselevel/2).
+input_cw(tempadvisedby/2).
 
-input(tempadvisedby/2).
+input(coauthor_stu/3).
+
+input(coauthor_stu2/4).
+
+input(coauthor_pro/3).
+
+input(coauthor_pro2/4).
 
 
 determination(professor/1,student/1).
@@ -507,7 +517,7 @@ advisedby(ai,person208, person319).
 advisedby(ai,person63, person415).
 advisedby(ai,person318, person185).
 advisedby(ai,person318, person319).
-advisedby(ai,person83, person349).
+advisedby(ai,person83, person349). 
 inphase(ai,person408, pre_quals).
 inphase(ai,person265, post_generals).
 inphase(ai,person70, pre_quals).
@@ -1213,6 +1223,7 @@ neg(student(ai,person79)).
 
 neg(advisedby(ai,person13,person13)).
 neg(advisedby(ai,person13,person14)).
+
 neg(advisedby(ai,person13,person148)).
 neg(advisedby(ai,person13,person176)).
 neg(advisedby(ai,person13,person208)).
@@ -3024,7 +3035,7 @@ neg(advisedby(ai,person79,person349)).
 neg(advisedby(ai,person79,person407)).
 neg(advisedby(ai,person79,person415)).
 neg(advisedby(ai,person79,person7)).
-neg(advisedby(ai,person79,person79)).
+neg(advisedby(ai,person79,person79)). 
 neg(inphase(ai,person13,post_quals)).
 neg(inphase(ai,person13,pre_quals)).
 neg(inphase(ai,person139,post_generals)).
