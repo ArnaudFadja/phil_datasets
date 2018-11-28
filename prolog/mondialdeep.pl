@@ -28,14 +28,14 @@ Arnaud Nguembang Fadja and Fabrizio Riguzzi.
 :-sc.
 
 :- set_sc(verbosity,3).
-:- set_sc(zero,0.00000001).
 
 % Yes to set a seed and no to use the time clock seed
 :- set_sc(setSeed,no). % Default value=no
 :- set_sc(c_seed,3035).
+:- set_sc(useInitParams,no). % Default value=no
 
 % choose the parameter learning: dphil (the default) or emphil 
-:- set_sc(algorithmType,emphil).
+:- set_sc(algorithmType,dphil).
 % yes to save the statistis and no otherwise
 :- set_sc(saveStatistics,yes). % default value=no 
 % The name of the folder where to save the statistics
@@ -46,8 +46,8 @@ Arnaud Nguembang Fadja and Fabrizio Riguzzi.
 
 % Maximun number of iteration and other parameters to control the stop condition.
 :- set_sc(maxIter_phil,1000).  
-:- set_sc(epsilon_deep,0.001).
-:- set_sc(epsilon_deep_fraction,0.0001).
+:- set_sc(epsilon_deep,0.0001).
+:- set_sc(epsilon_deep_fraction,0.00001).
 
 % randomly select the initial values of the weights between [-max, max]
 :- set_sc(max_initial_weight,0.5).

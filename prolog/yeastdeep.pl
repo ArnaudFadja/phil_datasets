@@ -18,25 +18,23 @@ To learn the parameteters and test the result
  
 */
 
-%:-use_module(library(phil)).
-:- use_module(phil).
+:-use_module(library(phil)).
 :-if(current_predicate(use_rendering/1)).
 :-use_rendering(c3).
 :-use_rendering(lpad).
 :-endif.
 
 :-sc.
-:- set_sc(depth_bound,true).
+:- set_sc(depth_bound,flase).
 :- set_sc(verbosity,3).
-:- set_sc(zero,0.00000001).
 
 % Yes to set a seed and no to use the time clock seed
-:- set_sc(setSeed,no). % Default value=no
+:- set_sc(setSeed,yes). % Default value=no
 :- set_sc(c_seed,3035).
-default_setting_sc(useInitParams,yes). % Default value=no
+:- set_sc(useInitParams,no). % Default value=no
 
 % choose the parameter learning: dphil (the default) or emphil 
-:- set_sc(algorithmType,emphil).
+:- set_sc(algorithmType,dphil).
 % yes to save the statistis and no otherwise
 :- set_sc(saveStatistics,yes). % default value=no
 % The name of the folder where to save the statistics
@@ -46,8 +44,8 @@ default_setting_sc(useInitParams,yes). % Default value=no
 
 % Maximun number of iteration and other parameters to control the stop condition.
 :- set_sc(maxIter_phil,1000).  
-:- set_sc(epsilon_deep,0.001).
-:- set_sc(epsilon_deep_fraction,0.0001).
+:- set_sc(epsilon_deep,0.0001).
+:- set_sc(epsilon_deep_fraction,0.00001).
 
 % randomly select the initial values of the weights between [-max, max]
 :- set_sc(max_initial_weight,0.5).
@@ -57,7 +55,7 @@ default_setting_sc(useInitParams,yes). % Default value=no
 
 % Adam parameter for dphil algorithm
 % adam(Eta,Beta1,Beta2,Epsilon_adam_hat)
-:- set_sc(adam_params,[0.4,0.1,0.4,1e-8]).
+:- set_sc(adam_params,[0.1,0.3,0.5,1e-8]).
 
 % Gradient descent strategy and the corresponding batch size
 :- set_sc(batch_strategy,stoch_minibatch(100)).
