@@ -17,8 +17,7 @@ Arnaud Nguembang Fadja and Fabrizio Riguzzi.
 
 */
 
-%:-use_module(library(phil)).
-:- use_module(phil).
+:-use_module(library(phil)).
 :- if(current_predicate(use_rendering/1)).
 :- use_rendering(c3).
 :- use_rendering(lpad).

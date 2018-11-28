@@ -61,7 +61,7 @@ To learn the parameteters and test the result
 
 % Adam parameter for dphil algorithm
 % adam(Eta,Beta1,Beta2,Epsilon_adam_hat)
-:- set_sc(adam_params,[0.,0.5,0.5,1e-8]).
+:- set_sc(adam_params,[0.5,0.5,0.5,1e-8]).
 
 % Gradient descent strategy and the correspondin batch size
 :- set_sc(batch_strategy,stoch_minibatch(100)).
