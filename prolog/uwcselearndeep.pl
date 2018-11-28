@@ -15,8 +15,9 @@ To learn the parameteters and test the result
 ?- induce_par([ai,graphics,language,systems,theory],P),test(P,[ai],LL,AUCROC,ROC,AUCPR,PR).
 */
 
-:-use_module(library(phil)).
-%:- use_module(phil).
+%:-use_module(library(phil)).
+%:-use_module(library(slipcover)).
+:- use_module(phil).
 :- if(current_predicate(use_rendering/1)).
 :- use_rendering(c3).
 :- use_rendering(lpad).
@@ -89,6 +90,7 @@ advisedby(A,B):0.5 :-
   student(A),
   hasposition(B,faculty).
 %2
+
 advisedby(A,B):0.5 :-
   professor(B),
   student(A),
@@ -158,7 +160,6 @@ coauthor_pro(A,B,C):0.5:-
 %14
 coauthor_pro2(A,B,C,D):0.5:-
 	publication(E,D). 
-
 
 :- end_in.
 
@@ -481,8 +482,7 @@ hasposition(ai,person171, faculty).
 hasposition(ai,person168, faculty).
 hasposition(ai,person407, faculty).
 projectmember(ai,project62, person319).
-%advisedby(ai,person45, person415).
-
+advisedby(ai,person45, person415).
 advisedby(ai,person265, person168).
 advisedby(ai,person381, person168).
 advisedby(ai,person176, person407).

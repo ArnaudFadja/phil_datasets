@@ -18,28 +18,29 @@ To learn the parameteters and test the result
  
 */
 
-:-use_module(library(phil)).
+%:-use_module(library(phil)).
+:- use_module(phil).
 :-if(current_predicate(use_rendering/1)).
 :-use_rendering(c3).
 :-use_rendering(lpad).
 :-endif.
 
 :-sc.
-
+:- set_sc(depth_bound,true).
 :- set_sc(verbosity,3).
 :- set_sc(zero,0.00000001).
 
 % Yes to set a seed and no to use the time clock seed
-:- set_sc(setSeed,"no"). % Default value=no
+:- set_sc(setSeed,no). % Default value=no
 :- set_sc(c_seed,3035).
+default_setting_sc(useInitParams,yes). % Default value=no
 
 % choose the parameter learning: dphil (the default) or emphil 
-:- set_sc(algorithmType,"emphil").
-% "Yes" to save the statistis and "No" otherwise
-:- set_sc(saveStatistics,"Yes"). % default value="No" 
+:- set_sc(algorithmType,emphil).
+% yes to save the statistis and no otherwise
+:- set_sc(saveStatistics,yes). % default value=no
 % The name of the folder where to save the statistics
-:- set_sc(statistics_folder,"YEAST").
-
+:- set_sc(statistics_folder,yeast_deep).
 
 % Hyperparameters to optimize for each dataset
 
@@ -58,7 +59,7 @@ To learn the parameteters and test the result
 % adam(Eta,Beta1,Beta2,Epsilon_adam_hat)
 :- set_sc(adam_params,[0.4,0.1,0.4,1e-8]).
 
-% Gradient descent strategy and the correspondin batch size
+% Gradient descent strategy and the corresponding batch size
 :- set_sc(batch_strategy,stoch_minibatch(100)).
 %:- set_sc(batch_strategy,minibatch(100)).
 %:- set_sc(batch_strategy,batch).
@@ -139,17 +140,18 @@ ymr280c,ynl009w,ykl198c,ynl231c,ykl215c,yjl098w,ykr072c,yhr128w,ydl022w,ydl168w,
 
 output(pos/0).
 
-input(protein_class/1).
-input(rprotein_class/1).
-input(complex/1).
-input(enzyme/1).
-input(interaction/2).
-input(location/1).
-input(path/1).
-input(phenotype/1).
-input(rcomplex/1).
-input(renzyme/1).
-input(rphenotype/1).
+input_cw(protein_class/1).
+input_cw(rprotein_class/1).
+input_cw(complex/1).
+input_cw(enzyme/1).
+input_cw(interaction/2).
+input_cw(location/1).
+input_cw(path/1).
+input_cw(phenotype/1).
+input_cw(rcomplex/1).
+input_cw(renzyme/1).
+input_cw(rphenotype/1).
+input(hidden_1/1).
 
 
 determination(pos/0,protein_class/1).

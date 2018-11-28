@@ -18,7 +18,8 @@ To learn the parameteters and test the result
 
 */
 
-:-use_module(library(phil)).
+%:-use_module(library(phil)).
+:- use_module(phil).
 :-use_module(library(lists)).
 
 :- if(current_predicate(use_rendering/1)).
@@ -28,19 +29,44 @@ To learn the parameteters and test the result
 
 :-sc.
 
+:- set_sc(depth_bound,false).
 :- set_sc(verbosity,3).
 :- set_sc(zero,0.00000001).
 
 % Yes to set a seed and no to use the time clock seed
-:- set_sc(setSeed,"no"). % Default value=no
+:- set_sc(setSeed,no). % Default value=no
 :- set_sc(c_seed,3035).
+default_setting_sc(useInitParams,yes). % Default value=no
 
 % choose the parameter learning: dphil (the default) or emphil 
-:- set_sc(algorithmType,"dphil").
-% "Yes" to save the statistis and "No" otherwise
-:- set_sc(saveStatistics,"Yes"). % default value="No" 
+:- set_sc(algorithmType,emphil).
+% yes to save the statistis and no otherwise
+:- set_sc(saveStatistics,yes). % default value=no
 % The name of the folder where to save the statistics
-:- set_sc(statistics_folder,"CARC_DEEP").
+:- set_sc(statistics_folder,carc_deep).
+
+% Hyperparameters to optimize for each dataset
+
+% Maximun number of iteration and other parameters to control the stop condition.
+:- set_sc(maxIter_phil,1000).  
+:- set_sc(epsilon_deep,0.001).
+:- set_sc(epsilon_deep_fraction,0.0001).
+
+% randomly select the initial values of the weights between [-max, max]
+:- set_sc(max_initial_weight,0.5).
+
+% Value to use if the denomitors of a certain fractions are zero: default value= 0.0000001
+:- set_sc(zero,0.0000001).
+
+% Adam parameter for dphil algorithm
+% adam(Eta,Beta1,Beta2,Epsilon_adam_hat)
+:- set_sc(adam_params,[0.4,0.1,0.4,1e-8]).
+
+% Gradient descent strategy and the corresponding batch size
+:- set_sc(batch_strategy,stoch_minibatch(100)).
+%:- set_sc(batch_strategy,minibatch(100)).
+%:- set_sc(batch_strategy,batch).
+
 
 
 % Hyperparameters to optimize for each dataset
@@ -162,36 +188,37 @@ fold(all,F):-
 
 output(active/0).
 
-input(ames/0).
-input(has_property/2).
-input(ashby_alert/2).
-input(mutagenic/0).
-input(ind/2).
-input(atm/4).
-input(symbond/3).
-input(bond/3).
-input(nitro/1).
-input(sulfo/1).
-input(methyl/1).
-input(methoxy/1).
-input(amine/1).
-input(ketone/1).
-input(ether/1).
-input(sulfide/1).
-input(alcohol/1).
-input(phenol/1).
-input(ester/1).
-input(imine/1).
+input_cw(ames/0).
+input_cw(has_property/2).
+input_cw(ashby_alert/2).
+input_cw(mutagenic/0).
+input_cw(ind/2).
+input_cw(atm/4).
+input_cw(symbond/3).
+input_cw(bond/3).
+input_cw(nitro/1).
+input_cw(sulfo/1).
+input_cw(methyl/1).
+input_cw(methoxy/1).
+input_cw(amine/1).
+input_cw(ketone/1).
+input_cw(ether/1).
+input_cw(sulfide/1).
+input_cw(alcohol/1).
+input_cw(phenol/1).
+input_cw(ester/1).
+input_cw(imine/1).
 input(alkyl_halide/1).
-input(ar_halide/1).
-input(non_ar_6c_ring/1).
-input(non_ar_hetero_6_ring/1).
-input(six_ring/1).
-input(non_ar_5c_ring/1).
-input(non_ar_hetero_5_ring/1).
-input(five_ring/1).
-input(connected/2).
-
+input_cw(ar_halide/1).
+input_cw(non_ar_6c_ring/1).
+input_cw(non_ar_hetero_6_ring/1).
+input_cw(six_ring/1).
+input_cw(non_ar_5c_ring/1).
+input_cw(non_ar_hetero_5_ring/1).
+input_cw(five_ring/1).
+input_cw(connected/2).
+input(hidden_1/1).
+input(hidden_2/2).
 
 modeh(1,active).
 

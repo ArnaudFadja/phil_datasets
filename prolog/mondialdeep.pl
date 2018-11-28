@@ -17,7 +17,8 @@ Arnaud Nguembang Fadja and Fabrizio Riguzzi.
 
 */
 
-:-use_module(library(phil)).
+%:-use_module(library(phil)).
+:- use_module(phil).
 :- if(current_predicate(use_rendering/1)).
 :- use_rendering(c3).
 :- use_rendering(lpad).
@@ -30,15 +31,15 @@ Arnaud Nguembang Fadja and Fabrizio Riguzzi.
 :- set_sc(zero,0.00000001).
 
 % Yes to set a seed and no to use the time clock seed
-:- set_sc(setSeed,"no"). % Default value=no
+:- set_sc(setSeed,no). % Default value=no
 :- set_sc(c_seed,3035).
 
 % choose the parameter learning: dphil (the default) or emphil 
-:- set_sc(algorithmType,"emphil").
-% "Yes" to save the statistis and "No" otherwise
-:- set_sc(saveStatistics,"Yes"). % default value="No" 
+:- set_sc(algorithmType,emphil).
+% yes to save the statistis and no otherwise
+:- set_sc(saveStatistics,yes). % default value=no 
 % The name of the folder where to save the statistics
-:- set_sc(statistics_folder,"MONDIAL").
+:- set_sc(statistics_folder,mond_deep).
 
 
 % Hyperparameters to optimize for each dataset
