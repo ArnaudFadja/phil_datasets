@@ -32,16 +32,19 @@ To learn the parameteters and test the result
 :-sc.
 
 :- set_sc(verbosity,3).
+:- set_sc(depth_bound,false).
 
 % Yes to set a seed and no to use the time clock seed
-:- set_sc(setSeed,no). % Default value=no
+:- set_sc(setSeed,yes). % Default value=no
 :- set_sc(c_seed,3035).
+
+%The initial values of the parameters are the ones set in the program
 :- set_sc(useInitParams,no). % Default value=no
 
 % choose the parameter learning: dphil (the default) or emphil 
 :- set_sc(algorithmType,dphil).
 % Yes to save the statistis and no otherwise
-:- set_sc(saveStatistics,no). % default value=no
+:- set_sc(saveStatistics,yes). % default value=no
 % The name of the folder where to save the statistics
 :- set_sc(statistics_folder,muta_deep).
 
@@ -207,7 +210,10 @@ fold(10,[d48,d60,d112,d148,d157,d35,d81,d91,d103,d118,d162,
 
 output(active/0).
 
-/* input_cw(lumo/1).
+input_cw(ind1/1).
+input_cw(inda/1).
+input_cw(act/1).
+input_cw(lumo/1).
 input_cw(logp/2).
 input_cw(bond/3).
 input_cw(atm/4).
@@ -222,11 +228,11 @@ input_cw(nitro/1).
 input_cw(methyl/1).
 input_cw(anthracene/1).
 input_cw(phenanthrene/1).
-input_cw(ball3/1). */
+input_cw(ball3/1). 
+intput(molecule_1/1).
+intput(molecule_2/1).
 
-
-
-
+/*
 input(ind1/1).
 input(inda/1).
 input(act/1).
@@ -247,7 +253,7 @@ input(methyl/1).
 input(anthracene/1).
 input(phenanthrene/1).
 input(ball3/1).
-
+*/
 modeh(1,active).
 
 modeb(1,lumo(-energy)).

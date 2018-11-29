@@ -25,12 +25,14 @@ To learn the parameteters and test the result
 :-endif.
 
 :-sc.
-:- set_sc(depth_bound,flase).
+:- set_sc(depth_bound,false).
 :- set_sc(verbosity,3).
 
 % Yes to set a seed and no to use the time clock seed
 :- set_sc(setSeed,yes). % Default value=no
 :- set_sc(c_seed,3035).
+
+%The initial values of the parameters are the ones set in the program
 :- set_sc(useInitParams,no). % Default value=no
 
 % choose the parameter learning: dphil (the default) or emphil 

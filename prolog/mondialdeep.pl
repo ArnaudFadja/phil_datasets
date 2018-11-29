@@ -27,10 +27,13 @@ Arnaud Nguembang Fadja and Fabrizio Riguzzi.
 :-sc.
 
 :- set_sc(verbosity,3).
+:- set_sc(depth_bound,false).
 
 % Yes to set a seed and no to use the time clock seed
-:- set_sc(setSeed,no). % Default value=no
+:- set_sc(setSeed,yes). % Default value=no
 :- set_sc(c_seed,3035).
+
+%The initial values of the parameters are the ones set in the program
 :- set_sc(useInitParams,no). % Default value=no
 
 % choose the parameter learning: dphil (the default) or emphil 
@@ -164,29 +167,30 @@ fold(f5,[f5]).
 
 output(christian_religion/1).
 
-%input_cw(christian_religion/1).
 
-input(country/6).
+input_cw(country/6).
 
-input(population/3).
+input_cw(population/3).
 
-input(politics/5).
+input_cw(politics/5).
 
-input(economy/6).
+input_cw(economy/6).
 
-input(language/3).
+input_cw(language/3).
 
-input(ethnicGroup/3).
+input_cw(ethnicGroup/3).
 
-input(borders/3).
+input_cw(borders/3).
 
-input(continent/2).
+input_cw(continent/2).
 
-input(encompasses/3).
+input_cw(encompasses/3).
 
-input(organization/6).
+input_cw(organization/6).
 
-input(isMember/3).
+input_cw(isMember/3).
+input(hidden1/1).
+
 
 determination(christian_religion/1, = /2).
 determination(christian_religion/1, geq/2).
