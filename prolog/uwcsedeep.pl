@@ -12,7 +12,7 @@ http://alchemy.cs.washington.edu/data/uw-cse
 
 /** <examples>
 To learn the parameteters and test the result
-?- induce_par([ai,graphics,language,systems,theory],P),test(P,[ai],LL,AUCROC,ROC,AUCPR,PR).
+?- induce_par([graphics,language,systems,theory],P),test(P,[ai],LL,AUCROC,ROC,AUCPR,PR).
 */
 
 :-use_module(library(phil)).
@@ -24,7 +24,9 @@ To learn the parameteters and test the result
 :-sc.
 
 :- set_sc(depth_bound,false).
-:- set_sc(verbosity,3).
+:- set_sc(prob_approx,false).
+:- set_sc(single_var,false).
+:- set_sc(verbosity,0).
 
 % Yes to set a seed and no to use the time clock seed
 :- set_sc(setSeed,yes). % Default value=no
@@ -48,7 +50,7 @@ To learn the parameteters and test the result
 :- set_sc(epsilon_deep,0.0001).
 :- set_sc(epsilon_deep_fraction,0.00001).
 
-% randomly select the initial values of the weights between [-max, max]
+% randomly select the initial values: of the weights between [-max, max]
 :- set_sc(max_initial_weight,0.5).
 
 % Value to use if the denominators of a certain fractions are zero: default value= 0.0000001
@@ -56,12 +58,13 @@ To learn the parameteters and test the result
 
 % Adam parameter for dphil algorithm
 % adam(Eta,Beta1,Beta2,Epsilon_adam_hat)
-:- set_sc(adam_params,[0.4,0.1,0.4,1e-8]).
+%:- set_sc(adam_params,[0.3,0.9,0.999,1e-8]).
+
 
 % Gradient descent strategy and the corresponding batch size
-:- set_sc(batch_strategy,stoch_minibatch(100)).
+%:- set_sc(batch_strategy,stoch_minibatch(100)).
 %:- set_sc(batch_strategy,minibatch(100)).
-%:- set_sc(batch_strategy,batch).
+:- set_sc(batch_strategy,batch).   % use the whole training set at each iteration
 
 bg([]).
 
@@ -76,89 +79,60 @@ fold(theory,[theory]).
 
 :- begin_in.
 
-%0
+%1
 advisedby(A,B):0.5 :-
   professor(B),
   student(A),
   publication(C,A),
   publication(C,B).
 
-%1
+%2
 advisedby(A,B):0.5 :-
   professor(B),
   student(A),
   hasposition(B,faculty).
-%2
+%3
 
 advisedby(A,B):0.5 :-
   professor(B),
   student(A),
   inphase(A,post_quals).
-%3
+%4
 advisedby(A,B):0.5 :-
   professor(B),
   student(A),
   taughtby(C, B, D),
   ta(C, A, D).
-%4
+%5
 advisedby(A,B):0.5 :-
   professor(B),
   student(A),
 	publication(C,A),
 	coauthor_stu(A,B,C).
-%5
+%6
  coauthor_stu(A,B,C):0.5:-
 	publication(C,D),
   D \== A, D\==B.
-%6
+%7
 coauthor_stu(A,B,C):0.5:-
 	publication(C,D),
   D \== A, D\==B,
 	inphase(A,P),
 	inphase(D,P).
-%7
+%8
 coauthor_stu(A,B,C):0.5:-
 	publication(C,D),
         D \== A, D\==B,
 	yearsinprogram(A,Y),
 	yearsinprogram(D,Y).
-%8
+%9
 coauthor_stu(A,B,C):0.5:-
 	publication(C,D),
         D \== A, D\==B,
 	coauthor_stu2(A,B,C,D).
-%9
+%10
 coauthor_stu2(A,B,C,D):0.5:-
 	publication(E,D).
-
-%10
-
-advisedby(A,B):0.5 :-
-  professor(B),
-  student(A),
-	publication(C,B),
-	coauthor_pro(A,B,C).
-%11
-coauthor_pro(A,B,C):0.5:-
-	publication(C,D),
-  D \== A, D\==B.
-
-%12  i added this clause
-coauthor_pro(A,B,C):0.5:-
-	publication(C,D),
-  D \== A, D\==B,
-  hasposition(D,F),
-  hasposition(D,F).
-
-%13
-coauthor_pro(A,B,C):0.5:-
-	publication(C,D),
-  D \== A, D\==B,
-	coauthor_pro2(A,B,C,D).
-
-%14
-coauthor_pro2(A,B,C,D):0.5:-
-	publication(E,D). 
 
 :- end_in.
 

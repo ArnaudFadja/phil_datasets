@@ -14,7 +14,7 @@ http://www.cs.ox.ac.uk/activities/machlearn/cancer.html
 
 /** <examples>
 To learn the parameteters and test the result
-?- induce_par([train],P),test(P,[test],LL,AUCROC,ROC,AUCPR,PR).
+?- 
 
 */
 
@@ -29,13 +29,12 @@ To learn the parameteters and test the result
 :-sc.
 
 :- set_sc(depth_bound,false).
-:- set_sc(verbosity,3).
+:- set_sc(verbosity,0).
+:- set_sc(single_var,false).
 
 % Yes to set a seed and no to use the time clock seed
 :- set_sc(setSeed,yes). % Default value=no
 :- set_sc(c_seed,3035).
-
-%The initial values of the parameters are the ones set in the program
 :- set_sc(useInitParams,no). % Default value=no
 
 % choose the parameter learning: dphil (the default) or emphil 
@@ -60,12 +59,12 @@ To learn the parameteters and test the result
 
 % Adam parameter for dphil algorithm
 % adam(Eta,Beta1,Beta2,Epsilon_adam_hat)
-:- set_sc(adam_params,[0.0005,0.1,0.0001,1e-8]).
+:- set_sc(adam_params,[0.4,0.1,0.4,1e-8]).
 
 % Gradient descent strategy and the corresponding batch size
-:- set_sc(batch_strategy,stoch_minibatch(100)).
+%:- set_sc(batch_strategy,stoch_minibatch(100)).
 %:- set_sc(batch_strategy,minibatch(100)).
-%:- set_sc(batch_strategy,batch).
+:- set_sc(batch_strategy,batch).  % use the whole training set at each iteration
 
 
 
@@ -76,48 +75,53 @@ bg([]).
 
 :- begin_in.
 
-%0
-active:0.5 :-
-        %atm(B,n,32,C).
-        atm(B,A,D,C).
-
+% First layer
 %1
 active:0.5 :-
-        %has_property(cytogen_ca,p).
-        has_property(A,B).
+     atm(B,A,D,C).
 
 %2
 active:0.5 :-
-        ames.
+        has_property(A,B).
 
 %3
 active:0.5 :-
-        %symbond(B,D,7).
+        ames.
+
+%4
+active:0.5 :-
         atm(B,A,E,C),
         symbond(B,D,F).
 
-%4
+%5
 active:0.5:-
   atm(B,T,Val,C),
   hidden_1(B).
 
-%5
-hidden_1(B):0.5:-
-   bond(B,A,D),
-   nitro(N),
-   mutagenic,
-   ind(E,F).
-  
 %6
 active:0.5 :-
         bond(A,B,D),
         hidden_2(A,B).
 
+% Second layer
+
 %7
+hidden_1(B):0.5:-
+   bond(B,A,D),
+   nitro(N),
+   mutagenic,
+   ind(E,F).
+%8
+
 hidden_2(A,B):0.5:-
    bond(B,C,D1),
    bond(A,E,D2).
+   hidden_21(C,E).
 
+%9
+% Third layer
+hidden_21(C,E):0.5:-
+   atm(C,E,A,B).
 :- end_in.
 
 :-style_check(+singleton).
@@ -193,7 +197,7 @@ input_cw(five_ring/1).
 input_cw(connected/2).
 input(hidden_1/1).
 input(hidden_2/2).
-
+input(hidden_21/2).
 modeh(1,active).
 
 modeb(*,ames).

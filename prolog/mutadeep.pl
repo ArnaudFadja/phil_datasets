@@ -18,7 +18,7 @@ Machine Learning, 100(1):127-156, July 2015
 
 /** <examples>
 To learn the parameteters and test the result
-?- induce_par([1,2,3,4,5,6,7,8,9],P),test(P,[10],LL,AUCROC,ROC,AUCPR,PR). 
+?- induce_par([2,3,4,5,6,7,8,9,10],P),test(P,[10],LL,AUCROC,ROC,AUCPR,PR). 
  
 */
 
@@ -31,14 +31,12 @@ To learn the parameteters and test the result
 
 :-sc.
 
-:- set_sc(verbosity,3).
+:- set_sc(verbosity,0).
 :- set_sc(depth_bound,false).
-
+:- set_sc(single_var,false).
 % Yes to set a seed and no to use the time clock seed
 :- set_sc(setSeed,yes). % Default value=no
 :- set_sc(c_seed,3035).
-
-%The initial values of the parameters are the ones set in the program
 :- set_sc(useInitParams,no). % Default value=no
 
 % choose the parameter learning: dphil (the default) or emphil 
@@ -67,9 +65,9 @@ To learn the parameteters and test the result
 :- set_sc(adam_params,[0.5,0.5,0.5,1e-8]).
 
 % Gradient descent strategy and the correspondin batch size
-:- set_sc(batch_strategy,stoch_minibatch(100)).
+%:- set_sc(batch_strategy,stoch_minibatch(100)).
 %:- set_sc(batch_strategy,minibatch(100)).
-%:- set_sc(batch_strategy,batch).
+:- set_sc(batch_strategy,batch).  % use the whole training set at each iteration
 
 bg([]).
 
@@ -80,110 +78,149 @@ bg([]).
 :-style_check(-singleton).
 
 :- begin_in.
-%0
+
+% First layer
+%1
 active:0.5:-
-  lumo(A),
-  atm(B,o,40,C),
-  atm(D,o,40,C).
- %1
-active:0.5:-
-  lumo(A),
-  atm(B,T,38,C),
-  nitro(D).
+  atm(A,c,C,D).
 %2
 active:0.5:-
-  atm(B,T,Val,C),
-  molecule_1(B).
+  atm(A,h,C,D).
 %3
-molecule_1(B):0.5:-
-   bond(B,A,D),
-   lumo(L),
-   nitro(N),
-   atm(A,h,Val,C1). 
+active:0.5:-
+  atm(A,o,C,D).
 %4
 active:0.5:-
-  atm(B,T,Val,C),
-  molecule_2(B).
+  atm(A,c,C,D),
+  hidden_c_1(A).
 %5
-molecule_2(B):0.5:-
-   bond(B,A,D),
-   ind1(L),
-   inda(N),
-   act(F),
-   atm(A,h,Val,C1).
+active:0.5:-
+  atm(A,h,C,D),
+  hidden_h_1(A).
 %6
 active:0.5:-
-  lumo(A),
-  atm(B,n,38,C),
-  atm(D,n,38,C).
+  atm(A,o,C,D),
+  hidden_o_1(A).
+
 %7
-active:0.5:-
-  lumo(A),
-  atm(B,n,38,C),
-  bond(B,D,2).
+% Second layer
+ hidden_c_1(A):0.5:-
+  bond(A,B,7).
 %8
-active:0.5:-
-  lumo(A),
-  atm(B,n,38,C),
-  bond(D,B,1).
+ hidden_h_1(A):0.5:-
+  bond(A,B,7).
 %9
-active:0.5:-
-  bond(A,B,2),
-  atm(A,o,40,C).
+hidden_o_1(A):0.5:-
+  bond(A,B,7).
 
 %10
-active:0.5:-
-  bond(A,B,2),
-  atm(C,n,38,D).
+hidden_c_1(A):0.5:-
+  bond(A,B,2).
 %11
-active:0.5:-
-  bond(A,B,2),
-  bond(C,D,2).
+ hidden_h_1(A):0.5:-
+  bond(A,B,2).
 %12
-active:0.5:-
-  bond(A,B,2),
-  bond(B,C,2).
+hidden_o_1(A):0.5:-
+  bond(A,B,2).
 %13
-active:0.5:-
-  bond(A,B,1),
-  atm(B,h,3,C).
-%14
-active:0.5:-
-  bond(A,B,1),
-  atm(C,c,27,D).
-%15
-active:0.5:-
-  bond(A,B,7),
-  nitro(C).
-%16
-active:0.5:-
-  bond(A,B,7),
-  ring_size_6(C).
-%17
-active:0.5:-
-  bond(A,B,7),
-  benzene(C).
+hidden_c_1(A):0.5:-
+  bond(A,B,1).
 
+%14
+ hidden_h_1(A):0.5:-
+  bond(A,B,1).
+%15
+hidden_o_1(A):0.5:-
+  bond(A,B,1).
+
+%16
+ hidden_c_1(A):0.5:-
+  bond(A,B,7),
+  hidden_c7_11(A,B).
+%17
+hidden_h_1(A):0.5:-
+  bond(A,B,7),
+  hidden_h7_11(A,B).
+%18
+hidden_o_1(A):0.5:-
+  bond(A,B,7),
+  hidden_o7_11(A,B).
+
+%19
+ hidden_c_1(A):0.5:-
+  bond(A,B,2),
+  hidden_c2_11(A,B).
+%20
+hidden_h_1(A):0.5:-
+  bond(A,B,2),
+  hidden_h2_11(A,B).
+
+%21
+hidden_o_1(A):0.5:-
+  bond(A,B,2),
+  hidden_o2_11(A,B).
+
+%22
+hidden_c_1(A):0.5:-
+  bond(A,B,1).
+  hidden_c1_11(A,B).
+
+%23
+hidden_h_1(A):0.5:-
+  bond(A,B,1),
+  hidden_h1_11(A,B).
+%24
+hidden_o_1(A):0.5:-
+  bond(A,B,1),
+  hidden_o1_11(A,B).
+
+%25
+% Third layer
+hidden_c7_11(A,B):0.5:- 
+atm(B,c,D,E),
+atm(A,c,D1,E1).
+
+%26
+hidden_c2_11(A,B):0.5:- 
+atm(B,c,D,E),
+atm(A,c,D1,E1).
+
+%27
+hidden_c1_11(A,B):0.5:- 
+atm(B,c,D,E),
+atm(A,c,D1,E1).
+
+%28
+hidden_h7_11(A,B):0.5:- 
+atm(B,h,D,E),
+atm(A,h,D1,E1).
+
+%29
+hidden_h2_11(A,B):0.5:- 
+atm(B,h,D,E),
+atm(A,h,D1,E1).
+
+%30
+hidden_f1_11(A,B):0.5:- 
+atm(B,h,D,E),
+atm(A,h,D1,E1).
+
+%31
+hidden_o7_11(A,B):0.5:- 
+atm(B,o,D,E),
+atm(A,o,D1,E1).
+%32
+hidden_o2_11(A,B):0.5:- 
+atm(B,o,D,E),
+atm(A,o,D1,E1).
+%33
+hidden_o1_11(A,B):0.5:- 
+atm(B,o,D,E),
+atm(A,o,D1,E1).
 :- end_in.
 :-style_check(-singleton).
 
 
-
-/*active:0.5:-
-  bond(A,B,7),
-  atm(C,c,22,D).
-
-active:0.5:-
-  bond(A,B,7),
-  atm(C,c,27,D).
-
-active:0.5:-
-  bond(A,B,7),
-  atm(B,c,22,C).
-
-active:0.5:-
-  bond(A,B,7),
-  atm(A,c,22,C). */
 
 
 
@@ -229,30 +266,24 @@ input_cw(methyl/1).
 input_cw(anthracene/1).
 input_cw(phenanthrene/1).
 input_cw(ball3/1). 
-intput(molecule_1/1).
-intput(molecule_2/1).
 
-/*
-input(ind1/1).
-input(inda/1).
-input(act/1).
+intput(hidden_c_1/1).
+intput(hidden_h_1/1).
+intput(hidden_o_1/1).
 
-input(lumo/1).
-input(logp/2).
-input(bond/3).
-input(atm/4).
-input(benzene/1).
-input(carbon_5_aromatic_ring/1).
-input(carbon_6_ring/1).
-input(hetero_aromatic_6_ring/1).
-input(hetero_aromatic_5_ring/1).
-input(ring_size_6/1).
-input(ring_size_5/1).
-input(nitro/1).
-input(methyl/1).
-input(anthracene/1).
-input(phenanthrene/1).
-input(ball3/1).
+intput(hidden_c7_11/2).
+intput(hidden_c2_11/2).
+intput(hidden_c1_11/2).
+
+intput(hidden_h7_11/2).
+intput(hidden_h2_11/2).
+intput(hidden_h1_11/2).
+
+intput(hidden_o7_11/2).
+intput(hidden_o2_11/2).
+intput(hidden_o1_11/2).
+
+
 */
 modeh(1,active).
 

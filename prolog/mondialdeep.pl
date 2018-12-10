@@ -13,7 +13,7 @@ Arnaud Nguembang Fadja and Fabrizio Riguzzi.
 */
 
 /** <examples>
-?- induce_par([f1,f2,f3,f4,f5],P),test(P,[f1],LL,AUCROC,ROC,AUCPR,PR).
+?- induce_par([f2,f3,f4,f5],P),test(P,[f1],LL,AUCROC,ROC,AUCPR,PR).
 
 */
 
@@ -26,14 +26,13 @@ Arnaud Nguembang Fadja and Fabrizio Riguzzi.
 
 :-sc.
 
-:- set_sc(verbosity,3).
-:- set_sc(depth_bound,false).
 
+:- set_sc(verbosity,0).
+:- set_sc(depth_bound,false).
+:- set_sc(single_var,false).
 % Yes to set a seed and no to use the time clock seed
 :- set_sc(setSeed,yes). % Default value=no
 :- set_sc(c_seed,3035).
-
-%The initial values of the parameters are the ones set in the program
 :- set_sc(useInitParams,no). % Default value=no
 
 % choose the parameter learning: dphil (the default) or emphil 
@@ -58,13 +57,14 @@ Arnaud Nguembang Fadja and Fabrizio Riguzzi.
 :- set_sc(zero,0.0000001).
 
 % Adam parameter for dphil algorithm
+
 % adam(Eta,Beta1,Beta2,Epsilon_adam_hat)
-:- set_sc(adam_params,[0.4,0.1,0.4,1e-8]).
+:- set_sc(adam_params,[0.001,0.9,0.999,1e-8]).
 
 % Gradient descent strategy and the correspondin batch size
-:- set_sc(batch_strategy,stoch_minibatch(100)).
+%:- set_sc(batch_strategy,stoch_minibatch(100)).
 %:- set_sc(batch_strategy,minibatch(100)).
-%:- set_sc(batch_strategy,batch).
+:- set_sc(batch_strategy,batch).  % use the whole training set at each iteration
 
 
 
@@ -73,82 +73,54 @@ bg([]).
 :-style_check(-singleton).
 :- begin_in.
 
-
+%1
 christian_religion(Stat):0.5:-
   country(Name,Stat,Capital,Province,Area,Population),
   borders(Stat,Stat2,E),
   hidden1(Stat).
 
+%2
 hidden1(Stat):0.5:-
   population(Stat,Growth,Mortality),
   politics(Stat,Indep,Depent,null,Gov),
   economy(Stat,GDP,Agri,Service,Industry,Inflation). 
 
-christian_religion(Stat):0.5:-
-  country(Name,Stat,Capital,Province,Area,Population),
-  borders(Stat,Stat2,E),
-  same_etnic(Stat,B).
-
-/*christian_religion(Stat):0.5:-
-  country(Name,Stat,Capital,Province,Area,Population),
-  %B='Rwanda',
-  ethnicGroup(Stat,B,Per),
-  same_etnic(Stat,B).
-
-same_continent(Stat1,Stat2):0.5:-
-  country(Name,Stat2,Capital,Province,Area,Population),
-  encompasses(Stat1,Continent,Per1),
-  encompasses(Stat2,Continent,Per2). 
-
-same_organization(Stat1,Stat2):0.5:-
-  organization(Org,Name,City, Country,provinc,Date),
-  isMember(Stat,Org,member),
-  isMember(Stat2,Org,member).*/
-
-same_etnic(Stat1,B):0.5:-
-  country(Name,Stat2,Capital,Province,Area,Population),
-  ethnicGroup(Stat2,B,Per).
-
+%3
 christian_religion(A):0.5:-
   ethnicGroup(A,B,C),
-  %B='Rwanda',
   borders(A,D,E).
 
+%4
 christian_religion(A):0.5:-
   ethnicGroup(A,B,C),
-  %B='Micronesian',
   isMember(A,D,E),
   E=member.
-  %co_organization(A,D).
 
-christian_religion(A):0.662762 :-
+%5
+christian_religion(A):0.5 :-
   ethnicGroup(A,B,C),
   B='Micronesian',
   isMember(A,D,E).
 
-%co_organization(A,D):0.5:-
-% organization(D,Name2,City,Country,Province2,Estabished). 
-
+%6
 christian_religion(A):0.5:-
   ethnicGroup(A,B,C),
-  %B='Micronesian',
   isMember(A,D,E).
 
+%7
 christian_religion(A):0.5:-
   ethnicGroup(A,B,C),
-  %D='Australia/Oceania',
   encompasses(A,D,E).
   
-
+%8
 christian_religion(A):0.5:-
   ethnicGroup(A,B,C),
-  %B='Indonesian',
   borders(D,A,E).
-
+%9
 christian_religion(A):0.5:-
   politics(A,B,C,D,E).
-  %E='constitutional government in free association with the US'.
 
+%10
 christian_religion(A):0.5:-
   politics(A,B,C,D,E). 
 
